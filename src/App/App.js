@@ -1,7 +1,7 @@
 import './App.css';
 import SideMenu from '../components/SideMenu';
 import Header from '../components/Header';
-import {makeStyles } from '@material-ui/core'
+import {makeStyles, CssBaseline } from '@material-ui/core'
 
 
 
@@ -21,6 +21,7 @@ function App() {
    <div className={classes.appMain}>
    <Header/>
    </div>
+   <CssBaseline/>
   
    </>
   );
