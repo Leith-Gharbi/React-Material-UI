@@ -22,7 +22,7 @@ export const getDepartementCollection = (
     ]
 )
 export function generateEmployeeId() {
-    if (localStorage.getItem(KEY.employeeId) == null)
+    if (localStorage.getItem(KEYS.employeeId) == null)
         localStorage.setItem(KEYS.employeeId, '0')
 
     var id = parseInt(localStorage.getItem(KEYS.employeeId))
@@ -30,7 +30,7 @@ export function generateEmployeeId() {
     return id;
 }
 
-export function insertEmployee(date) {
+export function insertEmployee(data) {
     let employees = getAllEmployees();
     data['id'] = generateEmployeeId();
     employees.push(data);
@@ -38,7 +38,7 @@ export function insertEmployee(date) {
 }
 
 export function getAllEmployees() {
-    if (localStorage.getItem(KEY.employees) == null)
+    if (localStorage.getItem(KEYS.employees) == null)
         localStorage.setItem(KEYS.employees, JSON.stringify([]))
     return JSON.parse(localStorage.getItem(KEYS.employees));
 }
