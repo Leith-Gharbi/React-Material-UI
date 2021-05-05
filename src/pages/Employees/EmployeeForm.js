@@ -1,22 +1,25 @@
 import React ,{useEffect,useState} from 'react'
-import { Grid, TextField, makeStyles } from '@material-ui/core';
+import Form, {useForm} from '../../components/useForm';
+import Controls from '../../components/controls/controls'
+import { Grid } from '@material-ui/core';
+import * as employeeServices from '../../services/employeeServices';
 
-const useStyles= makeStyles(theme=>({
-
-root:{
-'& .MuiFormControl-root':{
-    width:'80%',
-    margin : theme.spacing(1)
-
-}
-}
-
-}))
 
 
 
 export default function EmployeeForm() {
-const classes = useStyles();
+
+    const genderItems=[
+        {
+            id:'male',title:"Male"
+        },
+        {
+            id:'female',title:"Female"
+        },
+        {
+            id:'other',title:"Other"
+        }
+    ]
     const initialFValues ={
         id : 0 , 
         fullName:'',
@@ -28,40 +31,72 @@ const classes = useStyles();
         hireDate : new Date(),
         isPermanent : false,
     }
-
-    const[values,setValues]=useState(initialFValues); 
+const {values,setValues,handleInputChange} = useForm(initialFValues);
 
     useEffect(()=>{
 
     },[values]);
 
-    const handleInputChange =e=>{
-const {name,value}= e.target;
-setValues({...values , [name]:value})
-    }
-
+ 
     return (
-        <form className={classes.root}>
-            <Grid coantainer>
+            <Form>
+       <Grid coantainer>
             <Grid item xs={6}>
-            <TextField 
-            variant="outlined"
-             label="Full Name"
-             name='fullName'
-              value={values.fullName}
-              onChange={handleInputChange}
-              />
-            <TextField 
-            variant="outlined"
+                <Controls.Input label="Full Name" name="fullName" value={values.fullName} onChange={handleInputChange}/>
+          
+            <Controls.Input 
+            name='mobile'
+             label="Mobile"
+              value={values.mobile}j
+              onChange={handleInputChange}/>
+                  <Controls.Input 
+            name='city'
+             label="City"
+              value={values.city}
+              onChange={handleInputChange}/>
+                  <Controls.Input 
             name='email'
              label="Email"
-              value={values.email}/>
+              value={values.email}
+              onChange={handleInputChange}/>
             </Grid>
             <Grid item xs={6}>
+
+<Controls.RadioGroup  
+ name='gender'
+ value={values.gender}
+onChange={handleInputChange}
+label="Gender" 
+items={genderItems}
+>
+
+
+</Controls.RadioGroup>
+<Controls.Select
+ name='departmentId'
+ label="Department"
+ value={values.departmentId}
+onChange={handleInputChange}
+ options={employeeServices.getDepartementCollection}/>
+               <Controls.Checkbox name="isPermanent"
+                label="Permanent Employee"
+ value={values.isPermanent}
+onChange={handleInputChange}/>
+
+<Controls.DatePicker  name='hireDate'
+ label="Hire Date"
+ value={values.hireDate}
+onChange={handleInputChange} >
+
+</Controls.DatePicker>
+<div>
+    <Controls.Button  text="Submit" type="submit"/>
+
+    <Controls.Button text="Reset" color="default" />
+</div>
             </Grid>
 
             </Grid>
-            
-        </form>
+            </Form>
     )
 }
