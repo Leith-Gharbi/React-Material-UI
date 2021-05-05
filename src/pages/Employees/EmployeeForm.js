@@ -69,8 +69,8 @@ export default function EmployeeForm() {
 
   return (
     <Form onSubmit={handleSubmit}>
-      <Grid coantainer>
-        <Grid item xs={6} md={6}>
+      <Grid container>
+        <Grid item xs={12} md={6}>
           <Controls.Input
             label="Full Name"
             name="fullName"
@@ -99,7 +99,7 @@ export default function EmployeeForm() {
             onChange={handleInputChange}
           />
         </Grid>
-        <Grid item xs={6} md={6}>
+        <Grid item xs={12} md={6}>
           <Controls.RadioGroup
             name="gender"
             value={values.gender}
