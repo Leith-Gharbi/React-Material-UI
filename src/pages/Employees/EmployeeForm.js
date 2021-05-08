@@ -1,54 +1,55 @@
-import React, { useEffect, useState } from "react";
-import Form, { useForm } from "../../components/useForm";
-import Controls from "../../components/controls/controls";
-import { Grid } from "@material-ui/core";
-import * as employeeServices from "../../services/employeeServices";
+import React, { useEffect, useState } from 'react';
+import Form, { useForm } from '../../components/useForm';
+import Controls from '../../components/controls/controls';
+import { Grid } from '@material-ui/core';
+import * as employeeServices from '../../services/employeeServices';
 
-export default function EmployeeForm() {
+export default function EmployeeForm(props) {
+  const { addOrEdit, recordForEdit } = props;
   const validate = (fieldValues = values) => {
     let temp = { ...errors };
-    if ("fullName" in fieldValues)
-      temp.fullName = fieldValues.fullName ? "" : "this field is required.";
-    if ("email" in fieldValues)
+    if ('fullName' in fieldValues)
+      temp.fullName = fieldValues.fullName ? '' : 'this field is required.';
+    if ('email' in fieldValues)
       temp.email = /$^|.+@.+..+/.test(fieldValues.email)
-        ? ""
-        : "Email is not valid.";
-    if ("mobile" in fieldValues)
+        ? ''
+        : 'Email is not valid.';
+    if ('mobile' in fieldValues)
       temp.mobile =
-        fieldValues.mobile.length > 7 ? "" : "Minimum 8 numbers required.";
-    if ("departmentId" in fieldValues)
+        fieldValues.mobile.length > 7 ? '' : 'Minimum 8 numbers required.';
+    if ('departmentId' in fieldValues)
       temp.departmentId =
-        fieldValues.departmentId.length != 0 ? "" : "this field is required.";
+        fieldValues.departmentId.length != 0 ? '' : 'this field is required.';
     setErrors({
-      ...temp
+      ...temp,
     });
-    if (fieldValues == values) return Object.values(temp).every(x => x == "");
+    if (fieldValues == values) return Object.values(temp).every((x) => x == '');
   };
 
   const genderItems = [
     {
-      id: "male",
-      title: "Male"
+      id: 'male',
+      title: 'Male',
     },
     {
-      id: "female",
-      title: "Female"
+      id: 'female',
+      title: 'Female',
     },
     {
-      id: "other",
-      title: "Other"
-    }
+      id: 'other',
+      title: 'Other',
+    },
   ];
   const initialFValues = {
     id: 0,
-    fullName: "",
-    email: "",
-    mobile: "",
-    city: "",
-    gender: "male",
-    departmentId: "",
+    fullName: '',
+    email: '',
+    mobile: '',
+    city: '',
+    gender: 'male',
+    departmentId: '',
     hireDate: new Date(),
-    isPermanent: false
+    isPermanent: false,
   };
   const {
     values,
@@ -56,17 +57,21 @@ export default function EmployeeForm() {
     setValues,
     handleInputChange,
     errors,
-    setErrors
+    setErrors,
   } = useForm(initialFValues, true, validate);
 
   useEffect(() => {}, [values]);
 
-  const handleSubmit = e => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    if (validate()) employeeServices.insertEmployee(values);
-    resetForm();
+    if (validate()) addOrEdit(values, resetForm);
   };
-
+  useEffect(() => {
+    if (recordForEdit != null)
+      setValues({
+        ...recordForEdit,
+      });
+  }, [recordForEdit]);
   return (
     <Form onSubmit={handleSubmit}>
       <Grid container>
